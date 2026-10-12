@@ -1,7 +1,6 @@
 use axum::{Router, response::IntoResponse, routing::get};
 
 // mod route_module;
-use rust_hello::routes::users;
 use rust_hello::routes::users::users;
 
 #[tokio::main]

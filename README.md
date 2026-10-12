@@ -115,6 +115,18 @@ fn main() {
 }
 ```
 
+4. HMR 구성(bacon)   
+매번 코드 수정 후, 종료하고 cargo run 하면 불편합니다.
+```
+cargo install --locked bacon   
+```
+install을 사용하여 도구를 설치합니다.(내 PC에서 실행할 툴)   
+--locked 버전을 고정해서 설치   
+
+프로젝트 루트로 이동한 후, `bacon run` 명령어를 입력하면 끝.   
+r 키를 누르면 수동 재실행   
+q 키를 누르면 종료
+
 ### docs
 
 ---

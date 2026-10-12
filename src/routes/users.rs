@@ -1,8 +1,5 @@
-use axum::{
-    Router,
-    routing::{delete, get, post, put},
-};
+use axum::{Router, routing::get};
 
 pub fn users() -> Router {
-    Router::new().route("/", get(|| async { "Hello, Users!" }))
+    Router::new().route("/", get(|| async { "Hello, Users!!" }))
 }
