@@ -114,3 +114,8 @@ fn main() {
     // let broken = fruits.get(10).unwrap(); // 💥 인덱스 10은 없으므로 크래시!
 }
 ```
+
+### docs
+
+---
+[Rust 모듈](docs/module.md)
