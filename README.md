@@ -130,4 +130,5 @@ q 키를 누르면 종료
 ### docs
 
 ---
-[Rust 모듈](docs/module.md)
+[Rust 모듈](docs/module.md)   
+[Axum Route&Handler](docs/route.md)
