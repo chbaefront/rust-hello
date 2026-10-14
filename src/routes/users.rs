@@ -1,9 +1,11 @@
+use axum::http::{HeaderMap, header};
 use axum::{
     Router,
     extract::{Form, Json, Multipart, Path, Query},
     routing::{get, post},
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_json::json;
 use std::collections::HashMap;
 
 // 구조체
@@ -38,6 +40,30 @@ struct ResultResponse {
 struct UserResult {
     user_id: String,
     username: String,
+}
+
+#[derive(Deserialize)]
+struct NameQuery {
+    name: String,
+}
+
+#[derive(Serialize)]
+struct Response {
+    name: String,
+    user_agent: String,
+}
+
+#[derive(Serialize)]
+struct JsonResponse {
+    name: String,
+    age: Option<i32>,
+    address: Vec<Address>,
+}
+
+#[derive(Serialize)]
+struct Address {
+    city: String,
+    state: String,
 }
 
 pub fn users() -> Router {
@@ -112,6 +138,60 @@ pub fn users() -> Router {
                     file_name,
                     file_data.len()
                 )
+            }),
+        )
+        .route(
+            "/headers",
+            get(
+                |headers: HeaderMap, Query(query): Query<NameQuery>| async move {
+                    let user_agent = headers
+                        .get(header::USER_AGENT)
+                        .and_then(|v| v.to_str().ok()) // HeaderValue가 있고 올바른 문자열이면 &str로 변환
+                        .unwrap_or("user_agent"); // 없거나 변환 실패 시 기본 &str 사용
+
+                    let name = query.name.to_string();
+
+                    // user_agent.to_string() // 최종적으로 String 반환
+                    Json(Response {
+                        name,
+                        user_agent: user_agent.to_string(),
+                    })
+                },
+            ),
+        )
+        .route(
+            "/response",
+            get(|| async move {
+                // json 응답
+                // 구조체 정의 후,#[derive(Serialize)] json 직렬화
+                // JsonResponse 구조체와 Address 구조체..실제로 작성하니 구조체를 표현하는게 번거롭다.
+                // Json(
+                //     JsonResponse {
+                //         name: "홍길동".to_string(),
+                //         age: Option::from(10),
+                //         address: vec!(Address {
+                //             state: "z".to_string(),
+                //             city: "z".to_string()
+                //         }, Address {
+                //             state: "x".to_string(),
+                //             city: "x".to_string()
+                //         }),
+                //     }
+                // )
+
+                // json 매크로 사용
+                // serde_json = "1.0.154" 추가
+                // 이 방법은 간단하지만, 매번 동적으로 값을 만들어내기 때문에 성능이 느려질 수 있는 단점이 존재 + 컴파일 타임에 타입이 정해지지 않음
+                let result = json!({
+                    "name": "user",
+                    "age": null,
+                    "address": [
+                          {"city": "s", "state": "s"},
+                          {"city": "c", "state": "s"}
+                    ]
+                });
+
+                Json(result)
             }),
         )
 }
