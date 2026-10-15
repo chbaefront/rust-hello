@@ -1,11 +1,17 @@
-use axum::http::{HeaderMap, header};
 use axum::{
     Router,
     extract::{Form, Json, Multipart, Path, Query},
     routing::{get, post},
+    http::{
+        header,
+        HeaderMap,
+        StatusCode
+    }
 };
+use axum_extra::TypedHeader;
+use axum_extra::headers::{ContentType, UserAgent};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
+use serde_json::{json};
 use std::collections::HashMap;
 
 // 구조체
@@ -194,4 +200,8 @@ pub fn users() -> Router {
                 Json(result)
             }),
         )
+        .route("/status", get(|TypedHeader(user_agent): TypedHeader<UserAgent>| async move {
+            println!("{}", user_agent.as_str());
+            (StatusCode::OK, TypedHeader(ContentType::text_utf8()), Json(json!({ "status": "success" })))
+        }))
 }

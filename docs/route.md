@@ -254,3 +254,40 @@ axum = { version = "0.8.9", features = ["json", "multipart"]}
 
 body값이 next_field가 호출될 때마다 변경되기 때문에 가변 소유권이 필요
 
+- 상태 코드와 헤더
+
+axum 크레이트에서는 상태 코드를 `StatusCode` 열거형을 사용
+
+```
+use axum::http::StatusCode;
+
+StatusCode::CREATED
+StatusCode::OK
+StatusCode::BAD_REQUEST
+```
+
+상태 코드를 함께 응답하는 방법을 튜플을 사용하여 구성
+
+```rust
+
+route("/status", get(|| async {
+            (StatusCode::OK, Json(json!({ "status": "success" })))
+        }))
+```
+
+튜플 타입을 (StatusCode, &static str)로 명시하는 대신 `IntoResponse`를 사용하여 간단한 타입 표현 가능
+
+TypedHeader 를 활용하여 헤더 추출 및 응답에도 헤더 설정이 가능(axum 공식 확장 크레이트에서 가져오기 해야함)
+```
+axum-extra = { version = "0.12", features = ["typed-header"] }
+
+use axum_extra::TypedHeader;
+use axum_extra::headers::UserAgent;
+
+route("/status", get(|TypedHeader(user_agent): TypedHeader<UserAgent>| async move {
+            println!("{}", user_agent.as_str());
+            (StatusCode::OK, TypedHeader(ContentType::text_utf8()), Json(json!({ "status": "success" })))
+        }))
+```
+
+모든 헤더에 접근하려면 HeaderMap 사용 그렇지 않다면 명시된 헤더 하나만 파싱해서 가여올 때는 TypedHeader 사용
