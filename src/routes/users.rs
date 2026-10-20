@@ -13,6 +13,7 @@ use axum_extra::headers::{ContentType, UserAgent};
 use serde::{Deserialize, Serialize};
 use serde_json::{json};
 use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
 // 구조체
 #[derive(serde::Deserialize)]
@@ -72,7 +73,7 @@ struct Address {
     state: String,
 }
 
-pub fn users() -> Router {
+pub fn users() -> Router<Arc<Mutex<Vec<i32>>>> {
     Router::new()
         .route("/", get(|| async { "Hello, Users!!" }))
         .route(
