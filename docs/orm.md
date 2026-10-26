@@ -67,6 +67,8 @@ VALUES
 ('김반장', '5555');
 ```
 
+![img.png](img.png)
+
 만약, 마이그레이션을 원한다면 아래 명령어를 실행
 ```
 sea-orm-cli migrate init
