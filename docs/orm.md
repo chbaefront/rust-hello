@@ -43,9 +43,29 @@ SELECT version();
 ```
 - PostgreSQL 18 버전 이상의 공식 도커 이미지에서 데이터 저장 구조에 주의
 
+```
+CREATE SCHEMA IF NOT EXISTS "local";
+```
+
 ### DB 스키마 정의
 
 - Users, Category, Product 총 3개의 테이블을 정의
+
+```
+CREATE TABLE IF NOT EXISTS local.users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+
+INSERT INTO local.users(username, password)
+VALUES
+('홍길동', '1234'),
+('GD', '2222'),
+('아리랑', '3333'),
+('카카로트', '4444'),
+('김반장', '5555');
+```
 
 만약, 마이그레이션을 원한다면 아래 명령어를 실행
 ```
