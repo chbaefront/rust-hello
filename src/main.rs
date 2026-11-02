@@ -1,6 +1,8 @@
+use std::env;
 use std::sync::{Arc, Mutex};
 use axum::{Router, response::IntoResponse, routing::get};
 use axum::http::{header, Method};
+use sea_orm::{Database, DbErr};
 // mod route_module;
 use rust_hello::routes::users::users;
 use rust_hello::routes::state::state;
@@ -10,8 +12,15 @@ use rust_hello::routes::debug::debug;
 use tower_http::cors::{Any, CorsLayer};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), DbErr> {
     println!("Hello, world!");
+
+    if let Err(e) = dotenvy::dotenv() {
+        eprintln!(".env 파일을 로드하지 못했습니다: {}", e);
+    }
+
+    let database_url: String = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let conn = Database::connect(database_url).await?;
 
     // route_module::routes::test();
 
@@ -40,4 +49,6 @@ async fn main() {
     // let app = Router::new().route("/", get(|| async { "Hello, World!" }));
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
+
+    Ok(())
 }
