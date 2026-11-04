@@ -14,6 +14,14 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
+use axum::extract::State;
+// query
+// 생성된 엔터티 모듈들을 가져옵니다. (경로는 프로젝트 구조에 맞게 조절)
+use crate::entities::users::{Entity, Model};
+// 엔티티를 테이블과 연결하는 트레이트
+use sea_orm::{EntityTrait, QueryFilter, ColumnTrait};
+use crate::AppState;
+use crate::entities::users;
 
 // 구조체
 #[derive(serde::Deserialize)]
@@ -73,12 +81,33 @@ struct Address {
     state: String,
 }
 
-pub fn users() -> Router<Arc<Mutex<Vec<i32>>>> {
+pub fn users() -> Router<AppState> {
     Router::new()
-        .route("/", get(|| async { "Hello, Users!!" }))
+        .route("/", get(|State(data): State<AppState>| async move {
+            // SELECT
+            // user table
+            let users: Vec<Model> = Entity::find().all(&data.db).await.unwrap();
+            println!("{:#?}", users);
+
+            Json(json!({ "users": users })) // #[derive(Serialize)] 직접 추가하거나, sea-orm 피처 플래그에 serde 추가
+
+        }))
         .route(
             "/{user_id}",
-            get(|Path(user_id): Path<String>| async move { format!("user_id: {}", user_id) }),
+            get(|Path(user_id): Path<String>, State(data): State<AppState>| async move {
+                println!("user_id: {}", user_id);
+
+                let user: Model = Entity::find()
+                    .filter(users::Column::Id.eq(user_id.parse::<i32>().unwrap()))
+                    .one(&data.db).await
+                    .unwrap()
+                    .unwrap();
+
+                println!("{:#?}", user);
+
+                Json(json!({ "user": user }))
+
+            }),
         )
         .route(
             "/query",

@@ -1,7 +1,7 @@
 use axum::{Router, routing::get, debug_handler};
-use std::sync::{Arc, Mutex};
+use crate::AppState;
 
-pub fn debug() -> Router<Arc<Mutex<Vec<i32>>>> {
+pub fn debug() -> Router<AppState> {
     Router::new().route("/", get(get_handler))
 }
 

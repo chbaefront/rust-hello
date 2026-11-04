@@ -55,6 +55,10 @@ pub enum CustomUser {
 ```
 SQL 식별자를 문자열로 사용해서 명시적으로 표현도 가능
 
+### DB 연결
+
+---
+
 CRUD 연산을 하는 SQL을 실행하려면 DB에 연결을 해야한다.
 
 ```rust
@@ -70,3 +74,50 @@ let conn = Database::connect(database_url).await?;
 ```
 
 await?의 뒷부분에 붙은 물음표(?) 연산자 때문에 main 함수의 반환 타입을 변경 -> `Result<(), DbErr>`
+
+### SELECT, INSERT, UPDATE, DELETE
+
+---
+
+- 쿼리 빌더를 사용하려면 src/entities에 생성한 각 테이블의 엔티티를 가져와야함
+- lib.rs 에 entities 모듈 추가
+
+```rust
+// query
+// 생성된 엔터티 모듈들을 가져옵니다. (경로는 프로젝트 구조에 맞게 조절)
+use crate::entities::users::{Entity, Model};
+// 엔티티를 테이블과 연결하는 트레이트
+use sea_orm::{EntityTrait, QueryFilter, ColumnTrait};
+```
+
+```rust
+
+.route("/", get(|State(data): State<AppState>| async move {
+// SELECT
+// user table
+let users: Vec<Model> = Entity::find().all(&data.db).await.unwrap();
+println!("{:#?}", users);
+
+Json(json!({ "users": users })) // #[derive(Serialize)] 직접 추가하거나, sea-orm 피처 플래그에 serde 추가
+
+}))
+.route(
+"/{user_id}",
+get(|Path(user_id): Path<String>, State(data): State<AppState>| async move {
+println!("user_id: {}", user_id);
+
+let user: Model = Entity::find()
+.filter(users::Column::Id.eq(user_id.parse::<i32>().unwrap()))
+.one(&data.db).await
+.unwrap()
+.unwrap();
+
+println!("{:#?}", user);
+
+Json(json!({ "user": user }))
+
+}),
+```
+
+all: Vec<Model>을 반환   
+one: Model을 반환
