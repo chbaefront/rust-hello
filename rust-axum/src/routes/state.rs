@@ -1,8 +1,8 @@
+use crate::AppState;
 use axum::Router;
 use axum::extract::State;
 use axum::response::IntoResponse;
 use axum::routing::get;
-use crate::AppState;
 
 pub fn state() -> Router<AppState> {
     Router::new().route("/", get(state_hello))
