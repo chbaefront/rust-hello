@@ -1,6 +1,6 @@
 # rust-basics
 
-Rust 언어의 핵심인 소유권·빌림·클로저와 모듈 구성을 학습하는 프로젝트입니다.
+Rust의 소유권·빌림·클로저와 모듈 구성을 학습하는 예제 크레이트입니다. 개념 설명은 `docs`에, 실행 가능한 코드는 `src`에 분리했습니다.
 
 ## 실행
 
@@ -10,63 +10,38 @@ Rust 언어의 핵심인 소유권·빌림·클로저와 모듈 구성을 학습
 cargo run -p rust-basics
 ```
 
-## 소유권과 빌림
+컴파일과 테스트만 확인하려면 다음 명령을 사용합니다.
 
-Rust의 각 값에는 한 명의 소유자가 있습니다. 소유자가 스코프를 벗어나면 값은 자동으로 해제됩니다. `String`, `Vec`처럼 힙 데이터를 가진 값은 다른 변수나 함수에 값 자체를 전달하면 소유권이 이동합니다.
-
-```rust
-let first = String::from("hello");
-let second = first;
-println!("{second}");
-// println!("{first}"); // 소유권이 이동했으므로 컴파일 오류
+```bash
+cargo test -p rust-basics
 ```
 
-값을 계속 사용해야 한다면 참조로 빌립니다. 여러 불변 참조는 허용되지만, 가변 참조가 존재하는 동안에는 다른 참조를 동시에 사용할 수 없습니다.
+## 구성
 
-```rust
-fn append_role(value: &mut String) {
-    value.push_str(" developer");
-}
-
-let mut name = String::from("backend");
-append_role(&mut name);
-println!("{name}");
+```text
+rust-basics/
+├── docs/
+│   ├── module.md
+│   └── 소유권과빌림.md
+└── src/
+    ├── main.rs
+    ├── network.rs
+    ├── network/
+    │   ├── client.rs
+    │   ├── protocol.rs
+    │   └── server.rs
+    └── storage/
+        ├── mod.rs
+        ├── disk.rs
+        └── memory.rs
 ```
 
-`i32`, `bool`, `char` 같은 `Copy` 타입은 대입하거나 함수에 전달할 때 값이 복사되므로 기존 변수도 계속 사용할 수 있습니다.
+## 학습 자료
 
-## 클로저와 캡처
-
-클로저의 매개변수에는 일반 함수와 같은 소유권 규칙이 적용됩니다. 주변 변수를 캡처하는 방식에 따라 관련 트레이트가 달라집니다.
-
-| 캡처 방식 | 대표 트레이트 | 예시 |
+| 주제 | 상세 문서 | 실행 예제 |
 | --- | --- | --- |
-| 불변 빌림 | `Fn` | 값을 읽거나 출력 |
-| 가변 빌림 | `FnMut` | 카운터 증가, 벡터 변경 |
-| 소유권 이동 | `FnOnce` | `move` 클로저, 값 소비 |
+| 소유권, 빌림, 클로저 | [소유권과 빌림](docs/소유권과빌림.md) | [`main.rs`](src/main.rs) |
+| 모듈, 경로, 가시성 | [Rust 모듈](docs/module.md) | [`network.rs`](src/network.rs), [`network/`](src/network/) |
+| `mod.rs` 방식 | [Rust 모듈](docs/module.md#modrs-방식) | [`storage/mod.rs`](src/storage/mod.rs) |
 
-## 모듈과 크레이트
-
-- `mod`는 모듈을 정의하거나 모듈 파일을 선언합니다.
-- `pub`은 외부 모듈에 항목을 공개합니다.
-- `use`는 긴 모듈 경로를 현재 스코프로 가져옵니다.
-- `main.rs`는 바이너리 크레이트, `lib.rs`는 라이브러리 크레이트의 루트입니다.
-
-```rust
-mod network {
-    pub mod client {
-        pub fn connect() {}
-    }
-}
-
-fn main() {
-    network::client::connect();
-}
-```
-
-파일 기반 모듈은 `mod routes;` 선언과 `routes.rs` 또는 `routes/mod.rs` 파일을 연결합니다. 라이브러리 모듈을 바이너리에서 사용할 때는 패키지 이름의 하이픈을 밑줄로 바꾼 크레이트 경로를 사용합니다.
-
-## 상세 학습 노트
-
-- [소유권과 빌림](docs/소유권과빌림.md)
-- [Rust 모듈](docs/module.md)
+`README.md`는 프로젝트 탐색과 실행 방법만 안내합니다. 각 개념과 코드 설명은 위 상세 문서 및 소스의 주석을 참고합니다.
