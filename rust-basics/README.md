@@ -1,6 +1,6 @@
 # rust-basics
 
-Rust의 소유권·빌림·클로저와 모듈 구성을 학습하는 예제 크레이트입니다. 개념 설명은 `docs`에, 실행 가능한 코드는 `src`에 분리했습니다.
+Rust의 변수·기본 타입·소유권·빌림·클로저·구조체와 모듈 구성을 학습하는 예제 크레이트입니다. 개념 설명은 `docs`에, 실행 가능한 코드는 `src`에 분리했습니다.
 
 ## 실행
 
@@ -22,6 +22,8 @@ cargo test -p rust-basics
 rust-basics/
 ├── docs/
 │   ├── module.md
+│   ├── struct.md
+│   ├── variables-and-types.md
 │   └── 소유권과빌림.md
 └── src/
     ├── main.rs
@@ -30,6 +32,8 @@ rust-basics/
     │   ├── client.rs
     │   ├── protocol.rs
     │   └── server.rs
+    ├── structures.rs
+    ├── variables_and_types.rs
     └── storage/
         ├── mod.rs
         ├── disk.rs
@@ -38,10 +42,12 @@ rust-basics/
 
 ## 학습 자료
 
-| 주제 | 상세 문서 | 실행 예제 |
-| --- | --- | --- |
-| 소유권, 빌림, 클로저 | [소유권과 빌림](docs/소유권과빌림.md) | [`main.rs`](src/main.rs) |
-| 모듈, 경로, 가시성 | [Rust 모듈](docs/module.md) | [`network.rs`](src/network.rs), [`network/`](src/network/) |
-| `mod.rs` 방식 | [Rust 모듈](docs/module.md#modrs-방식) | [`storage/mod.rs`](src/storage/mod.rs) |
+| 주제                 | 상세 문서                              | 실행 예제                                                  |
+| -------------------- | -------------------------------------- | ---------------------------------------------------------- |
+| 소유권, 빌림, 클로저 | [소유권과 빌림](docs/소유권과빌림.md)  | [`main.rs`](src/main.rs)                                   |
+| 모듈, 경로, 가시성   | [Rust 모듈](docs/module.md)            | [`network.rs`](src/network.rs), [`network/`](src/network/) |
+| `mod.rs` 방식        | [Rust 모듈](docs/module.md#modrs-방식) | [`storage/mod.rs`](src/storage/mod.rs)                     |
+| 구조체와 메서드      | [Rust 구조체](docs/struct.md)          | [`structures.rs`](src/structures.rs)                       |
+| 변수와 기본 타입     | [Rust 변수와 기본 타입](docs/variables-and-types.md) | [`variables_and_types.rs`](src/variables_and_types.rs) |
 
 `README.md`는 프로젝트 탐색과 실행 방법만 안내합니다. 각 개념과 코드 설명은 위 상세 문서 및 소스의 주석을 참고합니다.

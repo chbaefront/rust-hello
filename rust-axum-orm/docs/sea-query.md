@@ -23,6 +23,7 @@ enum BakeryIden {
 ```
 
 - `DeriveIden` 은 `Iden` 매크로 구현을 간소화
+
 ```rust
 #[derive(DeriveIden)]
 enum Test {
@@ -33,6 +34,7 @@ enum Test {
 
 // 열거형은 PascalCase 로 작성
 ```
+
 DeriveIden 매크로 덕분에 열거형 변수들의 이름이 id, name, employee_name와 같이 자동으로 변환
 
 ```rust
@@ -53,6 +55,7 @@ pub enum CustomUser {
     Phone,
 }
 ```
+
 SQL 식별자를 문자열로 사용해서 명시적으로 표현도 가능
 
 ### DB 연결
@@ -119,5 +122,5 @@ Json(json!({ "user": user }))
 }),
 ```
 
-all: Vec<Model>을 반환   
+all: Vec<Model>을 반환  
 one: Model을 반환

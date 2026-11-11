@@ -6,6 +6,12 @@ mod network;
 // 이 방식은 이전 Rust 프로젝트에서 널리 사용됐으며 현재도 정상적으로 지원된다.
 mod storage;
 
+// 구조체 학습 예제는 별도 파일인 structures.rs에 정의한다.
+mod structures;
+
+// 변수 선언과 기본 타입 예제는 variables_and_types.rs에 분리한다.
+mod variables_and_types;
+
 // `use`를 사용하면 긴 모듈 경로를 현재 스코프로 가져올 수 있다.
 // `client`와 `server`는 network.rs에서 `pub mod`로 공개했기 때문에 접근 가능하다.
 use network::{client, server};
@@ -41,4 +47,10 @@ fn main() {
     storage::print_summary();
     storage::memory::save("학습 데이터");
     storage::disk::save("학습 노트.md");
+
+    // 구조체 생성, 갱신, 메서드 호출 예제를 실행한다.
+    structures::run();
+
+    // let, const와 스칼라·복합 타입 예제를 실행한다.
+    variables_and_types::run();
 }

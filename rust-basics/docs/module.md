@@ -114,9 +114,9 @@ pub fn print_summary() {
 
 `mod.rs` 방식은 모듈 루트와 자식 파일을 한 디렉터리에 모을 수 있습니다. 기존 Rust 프로젝트에서 자주 볼 수 있으며 현재 Rust에서도 지원됩니다.
 
-| 모듈 | 루트 파일 | 자식 모듈 예시 |
-| --- | --- | --- |
-| `network` | `network.rs` | `network/client.rs` |
+| 모듈      | 루트 파일        | 자식 모듈 예시      |
+| --------- | ---------------- | ------------------- |
+| `network` | `network.rs`     | `network/client.rs` |
 | `storage` | `storage/mod.rs` | `storage/memory.rs` |
 
 파일 배치는 다르지만 호출하는 코드에서는 두 방식에 차이가 없습니다.

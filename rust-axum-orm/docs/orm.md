@@ -9,6 +9,7 @@
 https://www.sea-ql.org/SeaORM/
 
 ### 의존성 설치
+
 ```
 cargo add sea-orm
 
@@ -25,7 +26,7 @@ sea-orm = { version = "2.0.4", features = ["sqlx-postgres", "runtime-tokio-nativ
 
 ### Docker
 
-- 도커 설치 후, 공식 이미지 pull   
+- 도커 설치 후, 공식 이미지 pull  
   https://hub.docker.com/_/postgres
 
 ```
@@ -41,6 +42,7 @@ docker exec -it local-postgres psql -U postgres
 SELECT version();
 \q # psql 종료하고 나가기
 ```
+
 - PostgreSQL 18 버전 이상의 공식 도커 이미지에서 데이터 저장 구조에 주의
 
 ```
@@ -123,6 +125,7 @@ VALUES
 ![img.png](img.png)
 
 만약, 마이그레이션을 원한다면 아래 명령어를 실행(또는 Entity 생성에 사용)
+
 ```
 cargo install sea-orm-cli
 ```
@@ -132,6 +135,7 @@ sea-orm-cli migrate init
 ```
 
 ![img_1.png](img_1.png)
+
 - migration/ 은 독립적인 Rust 크레이트이므로 Cargo.toml을 지니고 있음.
 - migration 폴더의 Cargo.toml에 추가 의존성을 명시(runtime-tokio-restls, sqlx-postgres)
 - m20220101 머시기 tables.rs 는 샘플 파일이므로 삭제해도 됨.
@@ -139,6 +143,7 @@ sea-orm-cli migrate init
 ```
 sea-orm-cli migrate generate [TABLE_NAME]
 ```
+
 위 명령어를 사용하여 새로운 마이그레이션 파일을 생성
 
 ```
@@ -165,6 +170,7 @@ impl MigrationTrait for Migration {
     }
 }
 ```
+
 - `up함수`와 `down함수`를 정의(up함수는 마이그레이션이 실행될 때 호출되는 함수, down은 마이그레이션을 롤백할 때 호출되는 함수)
 - `manager` 객체를 이용해 새로운 테이블을 생성하고 컬럼을 정의
 
@@ -173,17 +179,19 @@ sea-orm-cli migrate up
 ```
 
 루트 경로에 .env 생성하여 DB 연결을 맺을 수 있게 해줘야한다.
+
 ```
 SeaORM CLI->DATABASE_URL 환경변수->마이그레이션 실행
 
 DATABASE_URL=postgres://postgres:1234@localhost:5432/rust_db
 ```
+
 ![img_2.png](img_2.png)
 
 test 테이블이 생성되었다..!
 
-
 DB에 생성된 스키마를 기준으로 쿼리 모델을 생성하는 명령어는 아래와 같다.
+
 ```
 # 현재 스키마를 기반으로 Entity 생성
 sea-orm-cli generate entity \

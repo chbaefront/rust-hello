@@ -52,11 +52,11 @@ cargo run -p rust-axum-orm
 
 서버는 `http://localhost:3001`에서 실행됩니다.
 
-| Method | 경로 | 설명 |
-| --- | --- | --- |
-| GET | `/` | 서버 상태 확인 |
-| GET | `/users` | 모든 사용자 조회 |
-| GET | `/users/{user_id}` | ID로 사용자 한 명 조회 |
+| Method | 경로               | 설명                   |
+| ------ | ------------------ | ---------------------- |
+| GET    | `/`                | 서버 상태 확인         |
+| GET    | `/users`           | 모든 사용자 조회       |
+| GET    | `/users/{user_id}` | ID로 사용자 한 명 조회 |
 
 ## SeaORM 핵심 개념
 
@@ -67,7 +67,7 @@ sea-orm = { version = "2", features = [
   "sqlx-postgres",
   "runtime-tokio-native-tls",
   "macros",
-  "serde"
+  "serde",
 ] }
 ```
 

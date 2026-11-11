@@ -4,10 +4,10 @@
 
 ## 프로젝트 구성
 
-| 경로 | 학습 주제 | 실행 |
-| --- | --- | --- |
-| [`rust-basics`](rust-basics/README.md) | 소유권, 빌림, 클로저, 모듈 | `cargo run -p rust-basics` |
-| [`rust-axum`](rust-axum/README.md) | Axum 라우팅, Extractor, State, CORS, 핸들러 디버깅 | `cargo run -p rust-axum` |
+| 경로                                       | 학습 주제                                          | 실행                         |
+| ------------------------------------------ | -------------------------------------------------- | ---------------------------- |
+| [`rust-basics`](rust-basics/README.md)     | 소유권, 빌림, 클로저, 모듈                         | `cargo run -p rust-basics`   |
+| [`rust-axum`](rust-axum/README.md)         | Axum 라우팅, Extractor, State, CORS, 핸들러 디버깅 | `cargo run -p rust-axum`     |
 | [`rust-axum-orm`](rust-axum-orm/README.md) | PostgreSQL, SeaORM, SeaQuery, 엔티티, 마이그레이션 | `cargo run -p rust-axum-orm` |
 
 ## 공통 명령어
